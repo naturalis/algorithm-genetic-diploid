@@ -1,17 +1,28 @@
 package Algorithm::Genetic::Diploid::Logger;
-
 use strict;
+use Exporter;
 use base 'Exporter';
 
 our $AUTOLOAD;
-
 our @EXPORT_OK = qw(DEBUG INFO WARN ERROR FATAL);
 our %EXPORT_TAGS = ( 'levels' => [@EXPORT_OK] );
-
 our $VERBOSE = 2; # i.e. WARN, default 
 our %VERBOSE;
 
-# singleton constructor always returns reference to same object
+=head1 NAME
+
+Algorithm::Genetic::Diploid::Logger - reports on progress of the experiment
+
+=head1 METHODS
+
+=over
+
+=item new
+
+This singleton constructor always returns reference to same object
+
+=cut
+
 my $SINGLETON;
 sub new {
 	my $class = shift;
@@ -22,26 +33,15 @@ sub new {
 	return $SINGLETON;
 }
 
-# destructor does nothing
-sub DESTROY {}
+=item level
 
-# constants for log levels
-sub FATAL () { 0 }
-sub ERROR () { 1 }
-sub WARN ()  { 2 }
-sub INFO ()  { 3 }
-sub DEBUG () { 4 }
+Alters log level. Takes named arguments: C<method> provides a scalar or array of fully
+qualified method names whose verbosity to alter. C<class> provides a scalar or array of
+package names whose verbosity to alter. C<level> sets the verbosity to one of the levels
+described below.
 
-# constants mapped to string for AUTOLOAD
-my %levels = (
-	'fatal' => FATAL,
-	'error' => ERROR,
-	'warn'  => WARN,
-	'info'  => INFO,
-	'debug' => DEBUG,
-);
+=cut
 
-# alter log level
 sub level {
 	my $self = shift;
 	my %args = @_;
@@ -73,6 +73,69 @@ sub level {
 	return $self;
 }
 
+# destructor does nothing
+sub DESTROY {}
+
+=back
+
+=head1 VERBOSITY LEVELS
+
+The following constants are available when using this package with the use qualifier
+':levels', i.e. C<use Algorithm::Genetic::Diploid::Logger ':levels';>. They represent
+different verbosity levels that can be set globally, and/or at package level, and/or
+at method level.
+
+=over
+
+=item FATAL
+
+Only most severe messages are transmitted.
+
+=cut
+
+sub FATAL () { 0 }
+
+=item ERROR
+
+Possibly unrecoverable errors are transmitted.
+
+=cut
+
+sub ERROR () { 1 }
+
+=item WARN
+
+Warnings are transmitted. This is the default.
+
+=cut
+
+sub WARN ()  { 2 }
+
+=item INFO
+
+Informational messages are transmitted.
+
+=cut
+
+sub INFO ()  { 3 }
+
+=item DEBUG
+
+Everything is transmitted, including debugging messages.
+
+=cut
+
+sub DEBUG () { 4 }
+
+# constants mapped to string for AUTOLOAD
+my %levels = (
+	'fatal' => FATAL,
+	'error' => ERROR,
+	'warn'  => WARN,
+	'info'  => INFO,
+	'debug' => DEBUG,
+);
+
 # this is where methods such as $log->info ultimately are routed to
 sub AUTOLOAD {
 	my ( $self, $msg ) = @_;
@@ -103,5 +166,9 @@ sub AUTOLOAD {
 		}
 	}
 }
+
+=back
+
+=cut
 
 1;

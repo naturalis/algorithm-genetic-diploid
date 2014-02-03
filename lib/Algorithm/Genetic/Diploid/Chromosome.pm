@@ -4,6 +4,20 @@ use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 
+=head1 NAME
+
+Algorithm::Genetic::Diploid::Chromosome - one of a pair of homologous chromosomes
+
+=head1 METHODS
+
+=over
+
+=item new
+
+Constructor takes named arguments. Creates a default list of genes and chromosome number.
+
+=cut
+
 sub new {	
 	shift->SUPER::new(
 		'genes'  => [],
@@ -12,7 +26,12 @@ sub new {
 	);
 }
 
-# list of genes on the chromosome
+=item genes
+
+Sets and gets list of genes on the chromosome
+
+=cut
+
 sub genes {
 	my $self = shift;
 	if ( @_ ) {
@@ -22,15 +41,24 @@ sub genes {
 	return @{ $self->{'genes'} };
 }
 
-# chromosome number, i.e. in humans 
-# that would be 1..22, X, Y
+=item number
+
+Sets and gets chromosome number, i.e. in humans that would be 1..22, X, Y
+
+=cut
+
 sub number {
 	my $self = shift;
 	$self->{'number'} = shift if @_;
 	return $self->{'number'};
 }
 
-# exchanges genes with homologous chromosome
+=item recombine
+
+Exchanges genes with homologous chromosome (the argument to this method).
+
+=cut
+
 sub recombine {
 	my ( $self, $other ) = @_;
 	my @g1 = $self->genes;
@@ -43,5 +71,9 @@ sub recombine {
 	$self->genes(@g1);
 	$other->genes(@g2);
 }
+
+=back
+
+=cut
 
 1;

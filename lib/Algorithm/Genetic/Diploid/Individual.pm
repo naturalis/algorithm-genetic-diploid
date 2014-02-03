@@ -5,6 +5,21 @@ use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 
+=head1 NAME
+
+Algorithm::Genetic::Diploid::Individual - an individual that reproduces sexually
+
+=head1 METHODS
+
+=over
+
+=item new
+
+Constructor takes named arguments, sets a default, empty list of chromosomes and
+a default child count of zero
+
+=cut
+
 sub new {
 	shift->SUPER::new(
 		'chromosomes' => [],
@@ -13,7 +28,12 @@ sub new {
 	);
 }
 
-# number of children
+=item child_count
+
+Getter for the number of children
+
+=cut
+
 sub child_count {
 	shift->{'child_count'};
 }
@@ -22,7 +42,12 @@ sub child_count {
 # child count after breeding
 sub _increment_cc { shift->{'child_count'}++ }
 
-# list of chromosomes
+=item chromosomes
+
+Getter and setter for the list of chromosomes
+
+=cut
+
 sub chromosomes {
 	my $self = shift;
 	if ( @_ ) {
@@ -32,8 +57,12 @@ sub chromosomes {
 	return @{ $self->{'chromosomes'} }
 }
 
-# meiosis produces a gamete, i.e. n chromosomes 
-# that have mutated and recombined
+=item meiosis
+
+Meiosis produces a gamete, i.e. n chromosomes that have mutated and recombined
+
+=cut
+
 sub meiosis {
 	my $self = shift;
 	my $log = $self->logger;
@@ -63,8 +92,12 @@ sub meiosis {
 	return @gamete;
 }
 
-# produce a new individual from 
-# $self and $mate's gametes
+=item breed
+
+Produces a new individual by mating the invocant with the argument
+
+=cut
+
 sub breed {
 	my ( $self, $mate ) = @_;
 	$self->logger->debug("going to breed $self with $mate");
@@ -75,8 +108,12 @@ sub breed {
 	);
 }
 
-# express all the genes and weigh 
-# them to produce a phenotype
+=item phenotype
+
+Expresses all the genes and weighs them to produce a phenotype
+
+=cut
+
 sub phenotype {
 	my ( $self, $env ) = @_;
 	$self->logger->debug("computing phenotype in environment $env");
@@ -89,8 +126,12 @@ sub phenotype {
 	return $self->{'phenotype'};
 }
 
-# the fitness is the difference 
-# between the optimum and the phenotype
+=item fitness
+
+The fitness is the difference between the optimum and the phenotype
+
+=cut
+
 sub fitness {
 	my ( $self, $optimum, $env ) = @_;
 	my $id = $self->id;
@@ -99,5 +140,9 @@ sub fitness {
 	$self->logger->debug("fitness of $id against optimum $optimum is $diff");
 	return $diff;
 }
+
+=back
+
+=cut
 
 1;

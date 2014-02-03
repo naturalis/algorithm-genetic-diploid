@@ -8,6 +8,20 @@ use Algorithm::Genetic::Diploid::Individual;
 use Algorithm::Genetic::Diploid::Population;
 
 our $AUTOLOAD;
+our $VERSION = '0.1';
+
+=head1 NAME
+
+Algorithm::Genetic::Diploid - Extensible implementation of a diploid genetic algorithm
+
+=head1 DESCRIPTION
+
+This utility package can be used as the sole import (i.e. just 
+C<use Algorithm::Genetic::Diploid;>) to load all the required packages at once. It also
+provides static factory methods to create instances of these packages, e.g. C<create_gene>
+and so on.
+
+=cut
 
 sub AUTOLOAD {
 	my ( $self, %args ) = @_;

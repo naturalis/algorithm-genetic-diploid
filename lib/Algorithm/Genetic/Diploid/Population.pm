@@ -5,6 +5,20 @@ use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 
+=head1 NAME
+
+Algorithm::Genetic::Diploid::Population - A population of individuals that turns over
+
+=head1 METHODS
+
+=over
+
+=item new
+
+Constructor takes named arguments, creates a default, empty list of individuals
+
+=cut
+
 sub new {
 	shift->SUPER::new(
 		'individuals' => [],
@@ -12,7 +26,12 @@ sub new {
 	);
 }
 
-# list of individuals
+=item individuals
+
+Getter and setter for the list of individuals
+
+=cut
+
 sub individuals {
 	my $self = shift;
 	if ( @_ ) {
@@ -22,9 +41,14 @@ sub individuals {
 	return @{ $self->{'individuals'} };
 }
 
-# move on to the next generation, i.e.
-# 1. compute fitness of all individuals
-# 2. mate up to reproduction rate proportional to fitness
+=item turnover
+
+Moves the population on to the next generation, i.e.
+1. compute fitness of all individuals
+2. mate up to reproduction rate in proportion to fitness
+
+=cut
+
 sub turnover {
 	my ( $self, $gen, $env, $optimum ) = @_;
 	my $log = $self->logger;
@@ -82,5 +106,9 @@ sub turnover {
 	$self->individuals(@children);
 	return @{ $fittest[0] };
 }
+
+=back
+
+=cut
 
 1;

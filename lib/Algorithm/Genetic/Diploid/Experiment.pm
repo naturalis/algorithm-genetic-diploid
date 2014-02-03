@@ -2,6 +2,21 @@ package Algorithm::Genetic::Diploid::Experiment;
 use Algorithm::Genetic::Diploid;
 use base 'Algorithm::Genetic::Diploid::Base';
 
+=head1 NAME
+
+Algorithm::Genetic::Diploid::Experiment - manages an evolutionary experiment
+
+=head1 METHODS
+
+=over
+
+=item new
+
+Constructor takes named arguments. Provides defaults for C<mutation_rate> (0.05), 
+C<crossover_rate> (0.60), C<reproduction_rate> (0.35) and C<ngens> (50).
+
+=cut
+
 sub new {
 	shift->SUPER::new(
 		'mutation_rate'     => 0.05,
@@ -14,6 +29,13 @@ sub new {
 	);
 }
 
+=item optimum
+
+Should be overridden in order to define an optimum fitness value at the provided 
+generation.
+
+=cut
+
 # probably the expected t+1 value
 sub optimum {
 	my ( $self, $gen ) = @_;
@@ -21,38 +43,61 @@ sub optimum {
 	return my $optimum;
 }
 
-# probably a data object that 
-# gets passed to the gene functions
+=item env
+
+Getter and setter for a data object that gets passed to the gene functions
+
+=cut
+
 sub env {
 	my $self = shift;
 	$self->{'env'} = shift if @_;
 	return $self->{'env'};
 }
 
-# the fraction of individuals in the 
-# population that gets to reproduce
+=item reproduction_rate
+
+Getter and setter for the fraction of individuals in the population that 
+gets to reproduce
+
+=cut
+
 sub reproduction_rate {
 	my $self = shift;
 	$self->{'reproduction_rate'} = shift if @_;
 	return $self->{'reproduction_rate'};
 }
 
-# amount of change to the weight 
-# (and function) of a gene
+=item mutation_rate
+
+Amount of change to apply to the weight and/or function of a gene. 
+
+=cut
+
 sub mutation_rate {
 	my $self = shift;
 	$self->{'mutation_rate'} = shift if @_;
 	return $self->{'mutation_rate'};
 }
 
-# proportion of genes that crossover
+=item crossover_rate
+
+Getter and setter for the proportion of genes that crossover
+
+=cut
+
 sub crossover_rate {
 	my $self = shift;
 	$self->{'crossover_rate'} = shift if @_;
 	return $self->{'crossover_rate'};
 }
 
-# number of generations
+=item ngens
+
+Getter and setter for the number of generations in the experiment
+
+=cut
+
 sub ngens {
 	my $self = shift;
 	if ( @_ ) {
@@ -62,7 +107,12 @@ sub ngens {
 	return $self->{'ngens'};
 }
 
-# single Population
+=item population
+
+Getter and setter for the L<Algorithm::Genetic::Diploid::Population> object
+
+=cut
+
 sub population {
 	my $self = shift;
 	if ( @_ ) {
@@ -72,7 +122,12 @@ sub population {
 	return $self->{'population'};
 }
 
-# run the experiment!
+=item run
+
+Runs the experiment!
+
+=cut
+
 sub run {
 	my $self = shift;
 	my $log = $self->logger;
@@ -90,7 +145,12 @@ sub run {
 	return $fittest, $fitness;
 }
 
-# generally run this *after* an analysis
+=item genecount
+
+Returns the number of distinct genes that remained after an experiment.
+
+=cut
+
 sub genecount {
 	my $self = shift;
 	my %genes = map { $_->id => $_ }
@@ -99,5 +159,9 @@ sub genecount {
 				map { $_->individuals } $self->population;
 	return values %genes;
 }
+
+=back
+
+=cut
 
 1;
