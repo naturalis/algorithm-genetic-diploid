@@ -1,6 +1,6 @@
-package GA::Experiment;
-use GA;
-use base 'GA::Base';
+package Algorithm::Genetic::Diploid::Experiment;
+use Algorithm::Genetic::Diploid;
+use base 'Algorithm::Genetic::Diploid::Base';
 
 sub new {
 	shift->SUPER::new(

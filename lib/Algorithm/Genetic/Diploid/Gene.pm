@@ -1,6 +1,6 @@
-package GA::Gene;
-use GA::Base;
-use base 'GA::Base';
+package Algorithm::Genetic::Diploid::Gene;
+use Algorithm::Genetic::Diploid::Base;
+use base 'Algorithm::Genetic::Diploid::Base';
 
 sub new {
 	shift->SUPER::new(
@@ -12,10 +12,6 @@ sub new {
 # gene function is a subroutine ref that 
 # results in a gene product based
 # on environmental input
-#
-# maybe gene functions will incorporate 
-# machine learning:
-# https://class.coursera.org/ml/lecture/index
 sub function {
 	my $self = shift;
 	$self->make_function;

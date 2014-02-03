@@ -1,7 +1,7 @@
-package GA::Individual;
+package Algorithm::Genetic::Diploid::Individual;
 use List::Util qw'sum shuffle';
-use GA::Base;
-use base 'GA::Base';
+use Algorithm::Genetic::Diploid::Base;
+use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 
@@ -89,7 +89,7 @@ sub phenotype {
 	return $self->{'phenotype'};
 }
 
-# the fitness is the squared difference 
+# the fitness is the difference 
 # between the optimum and the phenotype
 sub fitness {
 	my ( $self, $optimum, $env ) = @_;

@@ -1,7 +1,7 @@
-package GA::Population;
+package Algorithm::Genetic::Diploid::Population;
 use List::Util qw'sum shuffle';
-use GA::Base;
-use base 'GA::Base';
+use Algorithm::Genetic::Diploid::Base;
+use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 

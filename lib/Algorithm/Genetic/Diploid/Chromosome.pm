@@ -1,6 +1,6 @@
-package GA::Chromosome;
-use GA::Base;
-use base 'GA::Base';
+package Algorithm::Genetic::Diploid::Chromosome;
+use Algorithm::Genetic::Diploid::Base;
+use base 'Algorithm::Genetic::Diploid::Base';
 
 my $log = __PACKAGE__->logger;
 

@@ -1,4 +1,4 @@
-package GA::Logger;
+package Algorithm::Genetic::Diploid::Logger;
 
 use strict;
 use base 'Exporter';

@@ -1,10 +1,10 @@
-package GA::Base;
-use GA::Logger;
+package Algorithm::Genetic::Diploid::Base;
+use Algorithm::Genetic::Diploid::Logger;
 use YAML::Any qw(Load Dump);
 
 my $id = 1;
 my $experiment;
-my $logger = GA::Logger->new;
+my $logger = Algorithm::Genetic::Diploid::Logger->new;
 
 # base constructor for everyone
 sub new {
@@ -24,7 +24,7 @@ sub new {
 	bless $obj, $package;
 	
 	# maybe the object was the experiment?
-	if ( $obj->isa('GA::Experiment') ) {
+	if ( $obj->isa('Algorithm::Genetic::Diploid::Experiment') ) {
 		$experiment = $obj;
 	}
 	
@@ -73,3 +73,5 @@ sub DESTROY {
 	my $self = shift;
 	$logger->debug("$self is being cleaned up");
 }
+
+1;
