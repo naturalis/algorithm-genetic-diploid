@@ -1,6 +1,9 @@
 package Algorithm::Genetic::Diploid::Experiment;
+use strict;
 use Algorithm::Genetic::Diploid;
 use base 'Algorithm::Genetic::Diploid::Base';
+
+my $log = __PACKAGE__->logger;
 
 =head1 NAME
 

@@ -1,4 +1,5 @@
 package Algorithm::Genetic::Diploid::Population;
+use strict;
 use List::Util qw'sum shuffle';
 use Algorithm::Genetic::Diploid::Base;
 use base 'Algorithm::Genetic::Diploid::Base';

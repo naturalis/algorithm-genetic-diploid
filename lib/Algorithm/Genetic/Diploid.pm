@@ -1,4 +1,5 @@
 package Algorithm::Genetic::Diploid;
+use strict;
 use Algorithm::Genetic::Diploid::Logger;
 use Algorithm::Genetic::Diploid::Base;
 use Algorithm::Genetic::Diploid::Chromosome;

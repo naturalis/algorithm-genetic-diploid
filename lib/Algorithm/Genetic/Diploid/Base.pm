@@ -1,4 +1,5 @@
 package Algorithm::Genetic::Diploid::Base;
+use strict;
 use Algorithm::Genetic::Diploid::Logger;
 use YAML::Any qw(Load Dump);
 
