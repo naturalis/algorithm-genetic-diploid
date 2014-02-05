@@ -26,10 +26,55 @@ sub new {
 		'crossover_rate'    => 0.60,
 		'reproduction_rate' => 0.35,
 		'ngens'             => 50,
+		'factory'           => Algorithm::Genetic::Diploid::Factory->new,
 		'population'        => undef,
 		'env'               => undef,
 		@_
 	);
+}
+
+=item initialize
+
+Sets up the experiment based on the provided arguments:
+
+ 'individual_count' => number of individuals in the population, default is 50
+ 'chromosome_count' => number of chromosome pairs per individual, default is 1
+ 'gene_count'       => number of genes per chromosome, default is 1
+
+=cut
+
+sub initialize {
+	my $self = shift;
+	my %args = ( 
+		'individual_count' => 50,
+		'chromosome_count' => 1,
+		'gene_count'       => 1,
+		@_
+	);
+	my $fac = $self->factory;
+	my $pop = $fac->create_population;
+	
+	# create individuals 
+	my @individuals;
+	for my $i ( 1 .. $args{'individual_count'} ) {
+		push @individuals, $fac->create_individual;
+		
+		# create chromosomes
+		my @chromosomes;
+		for my $j ( 1 .. $args{'chromosome_count'} ) {
+			push @chromosomes, $fac->create_chromosome( 'number' => $j );
+			
+			# create genes
+			my @genes;
+			for my $k ( 1 .. $args{'gene_count'} ) {
+				push @genes, $fac->create_gene;
+			}
+			$chromosomes[-1]->genes(@genes);
+		}
+		$individuals[-1]->chromosomes(@chromosomes);
+	}
+	$pop->individuals(@individuals);
+	$self->population($pop);
 }
 
 =item optimum
@@ -44,6 +89,19 @@ sub optimum {
 	my ( $self, $gen ) = @_;
 	# do something with env and generation
 	return my $optimum;
+}
+
+=item factory
+
+Getter and setter for a L<Algorithm::Genetic::Diploid::Factory> object (or subclass
+thereof), which instantiates other objects.
+
+=cut
+
+sub factory {
+	my $self = shift;
+	$self->{'factory'} = shift if @_;
+	return $self->{'factory'};
 }
 
 =item env
