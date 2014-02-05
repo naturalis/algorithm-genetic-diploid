@@ -67,11 +67,10 @@ Meiosis produces a gamete, i.e. n chromosomes that have mutated and recombined
 sub meiosis {
 	my $self = shift;
 	my $log = $self->logger;
-	$log->debug("going to create gametes");
 	
 	# this is basically mitosis: cloning of chromosomes
 	my @chro = map { $_->clone } $self->chromosomes;
-	$log->debug("have cloned chromosomes (meiosis II)");
+	$log->debug("have cloned ".scalar(@chro)." chromosomes (meiosis II)");
 	
 	# create pairs of homologous chromosomes, i.e. metafase
 	my @pairs;
