@@ -59,17 +59,19 @@ sub initialize {
 	for my $i ( 1 .. $args{'individual_count'} ) {
 		push @individuals, $fac->create_individual;
 		
-		# create chromosomes
+		# create chromosomes in homologous pairs
 		my @chromosomes;
 		for my $j ( 1 .. $args{'chromosome_count'} ) {
-			push @chromosomes, $fac->create_chromosome( 'number' => $j );
+			for ( 1 .. 2 ) {
+				push @chromosomes, $fac->create_chromosome( 'number' => $j );
 			
-			# create genes
-			my @genes;
-			for my $k ( 1 .. $args{'gene_count'} ) {
-				push @genes, $fac->create_gene;
+				# create genes
+				my @genes;
+				for my $k ( 1 .. $args{'gene_count'} ) {
+					push @genes, $fac->create_gene;
+				}
+				$chromosomes[-1]->genes(@genes);
 			}
-			$chromosomes[-1]->genes(@genes);
 		}
 		$individuals[-1]->chromosomes(@chromosomes);
 	}
@@ -84,7 +86,6 @@ generation.
 
 =cut
 
-# probably the expected t+1 value
 sub optimum {
 	my ( $self, $gen ) = @_;
 	# do something with env and generation
