@@ -7,9 +7,10 @@ use Algorithm::Genetic::Diploid::Experiment;
 use Algorithm::Genetic::Diploid::Gene;
 use Algorithm::Genetic::Diploid::Individual;
 use Algorithm::Genetic::Diploid::Population;
+use Algorithm::Genetic::Diploid::Factory;
 
 our $AUTOLOAD;
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 
 =head1 NAME
 
