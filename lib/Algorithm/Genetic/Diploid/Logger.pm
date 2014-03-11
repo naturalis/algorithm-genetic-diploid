@@ -8,6 +8,7 @@ our @EXPORT_OK = qw(DEBUG INFO WARN ERROR FATAL);
 our %EXPORT_TAGS = ( 'levels' => [@EXPORT_OK] );
 our $VERBOSE = 2; # i.e. WARN, default 
 our %VERBOSE;
+my $formatter = \&_simple_formatter;
 
 =head1 NAME
 
@@ -73,6 +74,40 @@ sub level {
 	return $self;
 }
 
+=item formatter
+
+Alters log string formatter. When argument is 'simple' the log string is just
+the logging level and message, when argument is 'verbose', the log string has
+the calling subroutine name and location in it. 'medium' omits the file location. 
+When the argument is a code reference, this reference is executed for every 
+log message, with the following named arguments:
+
+	'level' => (DEBUG|INFO|WARN|ERROR|FATAL)
+	'sub'   => fully qualified name of the calling subroutine
+	'file'  => path to the calling file
+	'line'  => line number from whence the call was made
+	'msg'   => the log message
+
+=cut
+
+sub formatter {
+	my ( $self, $arg ) = @_;
+	if ( ref $arg and ref $arg eq 'CODE' ) {
+		$formatter = $arg;
+	}
+	else {
+		if ( 'simple' eq lc $arg ) {
+			$formatter = \&_simple_formatter;
+		}
+		elsif ( 'medium' eq lc $arg ) {
+			$formatter = \&_medium_formatter;
+		}
+		elsif ( 'verbose' eq lc $arg ) {
+			$formatter = \&_verbose_formatter;
+		}
+	}
+}
+
 # destructor does nothing
 sub DESTROY {}
 
@@ -136,6 +171,24 @@ my %levels = (
 	'debug' => DEBUG,
 );
 
+sub _simple_formatter {
+	my %args = @_;
+	my ( $level, $sub, $file, $line, $msg ) = @args{('level','sub','file','line','msg')};
+	return sprintf "%s %s\n", $level, $msg;
+}
+
+sub _verbose_formatter {
+	my %args = @_;
+	my ( $level, $sub, $file, $line, $msg ) = @args{('level','sub','file','line','msg')};
+	return sprintf "%s %s [%s, %s] - %s\n", $level, $sub, $file, $line, $msg;
+}
+
+sub _medium_formatter {
+	my %args = @_;
+	my ( $level, $sub, $file, $line, $msg ) = @args{('level','sub','file','line','msg')};
+	return sprintf "%s %s [%s] - %s\n", $level, $sub, $line, $msg;
+}
+
 # this is where methods such as $log->info ultimately are routed to
 sub AUTOLOAD {
 	my ( $self, $msg ) = @_;
@@ -162,7 +215,13 @@ sub AUTOLOAD {
 		
 		# we need to do something with the message
 		if ( $verbosity >= $levels{$method} ) {
-			printf STDERR "%s %s [%s, %s] - %s\n", uc $method, $subroutine, $filename, $line, $msg;
+			printf STDERR $formatter->( 
+				'level' => uc $method, 
+				'sub'   => $subroutine, 
+				'file'  => $filename, 
+				'line'  => $line, 
+				'msg'   => $msg,
+			);
 		}
 	}
 }
