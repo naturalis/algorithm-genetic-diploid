@@ -52,7 +52,7 @@ Getter and setter for the list of chromosomes
 sub chromosomes {
 	my $self = shift;
 	if ( @_ ) {
-		$log->info("assigning new chromosomes: @_");
+		$log->debug("assigning new chromosomes: @_");
 		$self->{'chromosomes'} = \@_;
 	}
 	return @{ $self->{'chromosomes'} }
@@ -66,7 +66,6 @@ Meiosis produces a gamete, i.e. n chromosomes that have mutated and recombined
 
 sub meiosis {
 	my $self = shift;
-	my $log = $self->logger;
 	
 	# this is basically mitosis: cloning of chromosomes
 	my @chro = map { $_->clone } $self->chromosomes;
