@@ -57,18 +57,23 @@ sub initialize {
 	# create individuals 
 	my @individuals;
 	for my $i ( 1 .. $args{'individual_count'} ) {
-		push @individuals, $fac->create_individual;
+		push @individuals, $fac->create_individual( 'experiment' => $self );
 		
 		# create chromosomes in homologous pairs
 		my @chromosomes;
 		for my $j ( 1 .. $args{'chromosome_count'} ) {
 			for ( 1 .. 2 ) {
-				push @chromosomes, $fac->create_chromosome( 'number' => $j );
+				push @chromosomes, $fac->create_chromosome( 
+					'number'     => $j,
+					'experiment' => $self,
+				);
 			
 				# create genes
 				my @genes;
 				for my $k ( 1 .. $args{'gene_count'} ) {
-					push @genes, $fac->create_gene;
+					push @genes, $fac->create_gene(
+						'experiment' => $self,
+					);
 				}
 				$chromosomes[-1]->genes(@genes);
 			}
@@ -178,7 +183,7 @@ Getter and setter for the L<Algorithm::Genetic::Diploid::Population> object
 sub population {
 	my $self = shift;
 	if ( @_ ) {
-		$log->info("assigning new population: @_");
+		$log->debug("assigning new population: @_");
 		$self->{'population'} = shift;
 	}
 	return $self->{'population'};
