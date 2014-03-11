@@ -37,7 +37,7 @@ sub individuals {
 	my $self = shift;
 	if ( @_ ) {
 		$self->{'individuals'} = \@_;
-		$log->info("assigning ".scalar(@_)." individuals to population");
+		$log->debug("assigning ".scalar(@_)." individuals to population");
 	}
 	return @{ $self->{'individuals'} };
 }
@@ -53,7 +53,7 @@ Moves the population on to the next generation, i.e.
 sub turnover {
 	my ( $self, $gen, $env, $optimum ) = @_;
 	my $log = $self->logger;
-	$log->info("going to breed generation $gen against optimum $optimum");
+	$log->debug("going to breed generation $gen against optimum $optimum");
 	
 	# sort all individuals by fitness, creates array refs 
 	# where 0 element is Individual, 1 element is its fitness
@@ -61,7 +61,7 @@ sub turnover {
 	               map { [ $_, $_->fitness($optimum,$env) ] } 
 	               $self->individuals;
 	$log->debug("sorted current generation by fitness");
-	$log->info("fittest: ".$fittest[0]->[0]->phenotype($env));
+	$log->info("*** fittest at generation $gen: ".$fittest[0]->[0]->phenotype($env));
 	               
 	# get the highest index of Individual 
 	# that still gets to reproduce
@@ -70,17 +70,17 @@ sub turnover {
 	
 	# take the slice of Individuals that get to reproduce
 	my @breeders = @fittest[ 0 .. $maxidx ];
-	$log->info("number of breeders: ".scalar(@breeders));
+	$log->debug("number of breeders: ".scalar(@breeders));
 	
 	# compute the total fitness, to know how much each breeder gets to
 	# contribute to the next generation
 	my $total_fitness = sum map { $_->[1] } @breeders;
-	$log->info("total fitness is $total_fitness");
+	$log->debug("total fitness is $total_fitness");
 	
 	# compute the population size, which we need to divide up over the
 	# breeders in proportion of their fitness relative to total fitness
 	my $popsize = scalar $self->experiment->population->individuals;
-	$log->info("population size will be $popsize");
+	$log->debug("population size will be $popsize");
 	
 	# here we make breeding pairs
 	my @children;
@@ -101,7 +101,7 @@ sub turnover {
 	}
 	
 	my %genes = map { $_->id => 1 } map { $_->genes } map { $_->chromosomes } @children;
-	$log->info("generation $gen has ".scalar(keys(%genes))." distinct genes");
+	$log->debug("generation $gen has ".scalar(keys(%genes))." distinct genes");
 	
 	# now the population consists of the children
 	$self->individuals(@children);
