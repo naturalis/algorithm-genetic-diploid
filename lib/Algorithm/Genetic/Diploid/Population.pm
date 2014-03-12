@@ -79,7 +79,7 @@ sub turnover {
 	
 	# compute the population size, which we need to divide up over the
 	# breeders in proportion of their fitness relative to total fitness
-	my $popsize = scalar $self->experiment->population->individuals;
+	my $popsize = scalar $self->individuals;
 	$log->debug("population size will be $popsize");
 	
 	# here we make breeding pairs
