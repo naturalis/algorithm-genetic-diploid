@@ -99,7 +99,7 @@ Produces a new individual by mating the invocant with the argument
 
 sub breed {
 	my ( $self, $mate ) = @_;
-	$self->logger->debug("going to breed $self with $mate");
+	$log->debug("going to breed $self with $mate");
 	$self->_increment_cc;
 	$mate->_increment_cc;
 	__PACKAGE__->new( 
@@ -109,13 +109,13 @@ sub breed {
 
 =item phenotype
 
-Expresses all the genes and weighs them to produce a phenotype
+Expresses all the genes and weights them to produce a phenotype
 
 =cut
 
 sub phenotype {
 	my ( $self, $env ) = @_;
-	$self->logger->debug("computing phenotype in environment $env");
+	$log->debug("computing phenotype in environment $env");
 	if ( not defined $self->{'phenotype'} ) {
 		my @genes = map { $_->genes } $self->chromosomes;
 		my $total_weight = sum map { $_->weight } @genes;
@@ -136,7 +136,7 @@ sub fitness {
 	my $id = $self->id;
 	my $phenotype = $self->phenotype( $env );
 	my $diff = abs( $optimum - $phenotype );
-	$self->logger->debug("fitness of $id against optimum $optimum is $diff");
+	$log->debug("fitness of $id against optimum $optimum is $diff");
 	return $diff;
 }
 
