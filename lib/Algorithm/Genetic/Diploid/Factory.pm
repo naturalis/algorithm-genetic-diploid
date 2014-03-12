@@ -30,9 +30,11 @@ sub new {
 	my $class = shift;
 	my %self = ( %defaults, @_ );
 	for my $class ( values %self ) {
-		eval "require $class";
-		if ( $@ ) {
-			die $@;
+		if ( not $::{ $class . '::' } ) {
+			eval "require $class";
+			if ( $@ ) {
+				die $@;
+			}
 		}
 	}
 	return bless \%self, $class;
