@@ -17,7 +17,7 @@ package MockGene;
 use base 'Algorithm::Genetic::Diploid::Gene';
 Test::More::isa_ok( __PACKAGE__, 'Algorithm::Genetic::Diploid::Gene' );
 
-sub new { shift->SUPER::new( 'weight' => int rand 100 ) }
+sub new { shift->SUPER::new( 'weight' => ( 1 + int rand 100 ) ) }
 
 sub make_function {
 	my $self = shift;
@@ -41,7 +41,8 @@ sub new { shift->SUPER::new( 'experiment' => 'MockExperiment', 'gene' => 'MockGe
 ##########################################################################################
 package main;
 
-my $value = int rand 100;
+# avoid divide-by-zero failures
+my $value = 1 + int rand 100;
 
 my $experiment = MockExperiment->new( 
 	'factory' => MockFactory->new, 
