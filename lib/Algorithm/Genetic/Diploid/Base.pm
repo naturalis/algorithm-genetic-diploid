@@ -111,11 +111,6 @@ sub clone {
 	return __PACKAGE__->load(shift->dump);
 }
 
-sub DESTROY {
-	my $self = shift;
-	$logger->debug("$self is being cleaned up");
-}
-
 =back
 
 =cut
