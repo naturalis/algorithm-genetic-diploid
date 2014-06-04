@@ -10,7 +10,7 @@ use Algorithm::Genetic::Diploid::Population;
 use Algorithm::Genetic::Diploid::Factory;
 
 our $AUTOLOAD;
-our $VERSION = '0.2';
+our $VERSION = '0.3';
 
 =head1 NAME
 
