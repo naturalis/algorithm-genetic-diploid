@@ -26,3 +26,4 @@ Doxyfile
 lib\/xs*
 lib\/util*
 .travis.yml
+MYMETA.*
